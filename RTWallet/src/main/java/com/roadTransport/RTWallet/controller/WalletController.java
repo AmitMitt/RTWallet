@@ -1,6 +1,7 @@
 package com.roadTransport.RTWallet.controller;
 
 import com.roadTransport.RTWallet.entity.WalletDetails;
+import com.roadTransport.RTWallet.model.WalletPinRequest;
 import com.roadTransport.RTWallet.model.WalletRequest;
 import com.roadTransport.RTWallet.model.WalletResponse;
 import com.roadTransport.RTWallet.service.WalletService;
@@ -75,6 +76,16 @@ public class WalletController {
         WalletDetails walletDetails = walletService.getBalance(walletId);
         WalletResponse walletResponse = new WalletResponse();
         walletResponse.setBalance(walletDetails.getBalance());
+        return ResponseEntity.ok(walletResponse);
+    }
+
+    @CachePut(value = "WalletDetails", key = "#walletId")
+    @PutMapping("updateWalletPin")
+    public ResponseEntity<WalletResponse> updatePin(@RequestBody WalletPinRequest walletRequest) throws Exception {
+
+        WalletDetails walletDetails = walletService.updateWalletPin(walletRequest);
+        WalletResponse walletResponse = new WalletResponse();
+        walletResponse.setMessage("Pin Change Successfully.");
         return ResponseEntity.ok(walletResponse);
     }
 

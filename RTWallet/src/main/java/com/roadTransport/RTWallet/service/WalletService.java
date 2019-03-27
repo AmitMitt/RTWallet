@@ -1,6 +1,7 @@
 package com.roadTransport.RTWallet.service;
 
 import com.roadTransport.RTWallet.entity.WalletDetails;
+import com.roadTransport.RTWallet.model.WalletPinRequest;
 import com.roadTransport.RTWallet.model.WalletRequest;
 import org.springframework.stereotype.Service;
 
@@ -13,5 +14,6 @@ public interface WalletService {
     public WalletDetails delete(long walletId);
     public WalletDetails updateBalance(WalletRequest walletRequest);
     public WalletDetails getBalance(long walletId);
+    public WalletDetails updateWalletPin(WalletPinRequest walletRequest) throws Exception;
 
 }

@@ -1,6 +1,7 @@
 package com.roadTransport.RTWallet.serviceImpl;
 
 import com.roadTransport.RTWallet.entity.WalletDetails;
+import com.roadTransport.RTWallet.model.WalletPinRequest;
 import com.roadTransport.RTWallet.model.WalletRequest;
 import com.roadTransport.RTWallet.repository.WalletRepository;
 import com.roadTransport.RTWallet.service.WalletService;
@@ -8,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
+import java.util.Base64;
 import java.util.Calendar;
 
 @Service
@@ -25,11 +27,11 @@ public class WalletServiceImpl implements WalletService {
        }
 
        WalletDetails walletDetails1 = new WalletDetails();
-       walletDetails1.setBalance(walletRequest.getBalance());
+       walletDetails1.setBalance(0);
        walletDetails1.setCreatedDate(new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime()));
        walletDetails1.setOwnerName(walletRequest.getOwnerName());
        walletDetails1.setWalletId(walletRequest.getWalletId());
-       walletDetails1.setWalletPin(walletRequest.getWalletPin());
+       walletDetails1.setWalletPin(Base64.getEncoder().encodeToString(walletRequest.getWalletPin().getBytes()));
 
        walletRepository.saveAndFlush(walletDetails1);
         return walletDetails1;
@@ -47,11 +49,8 @@ public class WalletServiceImpl implements WalletService {
 
         WalletDetails walletDetails = walletRepository.findByWallet(walletRequest.getWalletId());
 
-        walletDetails.setBalance(walletRequest.getBalance());
         walletDetails.setModifiedDate(new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime()));
         walletDetails.setOwnerName(walletRequest.getOwnerName());
-        walletDetails.setWalletId(walletRequest.getWalletId());
-        walletDetails.setWalletPin(walletRequest.getWalletPin());
         walletRepository.saveAndFlush(walletDetails);
 
         return walletDetails;
@@ -78,6 +77,29 @@ public class WalletServiceImpl implements WalletService {
 
         WalletDetails walletDetails = walletRepository.findByWallet(walletId);
 
+        return walletDetails;
+    }
+
+    @Override
+    public WalletDetails updateWalletPin(WalletPinRequest walletRequest) throws Exception {
+
+        WalletDetails walletDetails = walletRepository.findByWallet(walletRequest.getWalletId());
+
+        byte[] pin = Base64.getDecoder().decode(walletDetails.getWalletPin());
+        String decodedString = new String(pin);
+
+        if(walletRequest.getCurrentPin().equalsIgnoreCase(decodedString)){
+            if(walletRequest.getNewPin().equalsIgnoreCase(walletRequest.getConfirmPin())){
+                walletDetails.setWalletPin(Base64.getEncoder().encodeToString(walletRequest.getNewPin().getBytes()));
+                walletRepository.saveAndFlush(walletDetails);
+            }
+            else {
+                throw new Exception("New Pin is not same as Confirm Pin.");
+            }
+        }
+        else {
+            throw new Exception("Current pin is not match.");
+        }
         return walletDetails;
     }
 

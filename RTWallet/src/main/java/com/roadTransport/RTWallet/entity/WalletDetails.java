@@ -22,7 +22,7 @@ public class WalletDetails {
 
     @Column(length = 4)
     @NotNull
-    private long walletPin;
+    private String walletPin;
 
     @Column
     @NotNull
@@ -58,11 +58,11 @@ public class WalletDetails {
         this.walletId = walletId;
     }
 
-    public long getWalletPin() {
+    public String getWalletPin() {
         return walletPin;
     }
 
-    public void setWalletPin(long walletPin) {
+    public void setWalletPin(String walletPin) {
         this.walletPin = walletPin;
     }
 

@@ -4,7 +4,7 @@ public class WalletRequest {
 
     private String ownerName;
     private long walletId;
-    private long walletPin;
+    private String walletPin;
     private double balance;
 
     public String getOwnerName() {
@@ -23,11 +23,11 @@ public class WalletRequest {
         this.walletId = walletId;
     }
 
-    public long getWalletPin() {
+    public String getWalletPin() {
         return walletPin;
     }
 
-    public void setWalletPin(long walletPin) {
+    public void setWalletPin(String walletPin) {
         this.walletPin = walletPin;
     }
 
