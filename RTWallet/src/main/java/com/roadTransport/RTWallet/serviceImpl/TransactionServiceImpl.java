@@ -9,8 +9,10 @@ import com.roadTransport.RTWallet.service.WalletService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.security.Principal;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.List;
 
 @Service
 public class TransactionServiceImpl implements TransactionService {
@@ -20,6 +22,7 @@ public class TransactionServiceImpl implements TransactionService {
 
    @Autowired
    private WalletService walletService;
+
     @Override
     public TransactionDetails add(TransactionRequest transactionRequest) {
 
@@ -38,7 +41,7 @@ public class TransactionServiceImpl implements TransactionService {
         transactionDetails.setReverse(true);
         transactionDetails.setReverseAmount(transactionRequest.getAmount());
         transactionDetails.setReverseTransactionDate(new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime()));
-        transactionDetails.setReverseTransactioNumber();
+        transactionDetails.setReverseTransactioNumber(GenerateTransactionNumber.generateTransactionNumber());
         }
         else {
             transactionDetails.setReverse(false);
@@ -48,7 +51,7 @@ public class TransactionServiceImpl implements TransactionService {
         transactionDetails.setTransactionDate(new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime()));
         transactionDetails.setUpdatedBalance(walletDetails.getBalance());
         transactionDetails.setUserMobileNumber(transactionRequest.getUserMobileNumber());
-        transactionDetails.setTransactionnNumber();
+        transactionDetails.setTransactionnNumber(GenerateTransactionNumber.generateTransactionNumber());
         transactionDetails.setUserName(transactionRequest.getUserName());
         transactionDetails.setWalletId(transactionDetails.getWalletId());
         transactionRepository.saveAndFlush(transactionDetails);
@@ -57,17 +60,22 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public TransactionDetails update(TransactionRequest transactionRequest) {
-        return null;
+    public TransactionDetails getByTransaction(String transactionNumber) throws Exception {
+
+        TransactionDetails transactionDetails = transactionRepository.getByTransaction(transactionNumber);
+        if(transactionDetails==null){
+            throw new Exception("Transaction not available.");
+        }
+        return transactionDetails;
     }
 
     @Override
-    public TransactionDetails getByTransaction(String transactionNumber) {
-        return null;
-    }
+    public List<TransactionDetails> getByMdn(Long userMobileNumber) throws Exception {
 
-    @Override
-    public TransactionDetails getByMdn(String userMobileNumber) {
-        return null;
+        List<TransactionDetails> transactionDetails = transactionRepository.getByMdn(userMobileNumber);
+        if(transactionDetails.isEmpty()){
+            throw new Exception("Transaction not available.");
+        }
+        return transactionDetails;
     }
 }

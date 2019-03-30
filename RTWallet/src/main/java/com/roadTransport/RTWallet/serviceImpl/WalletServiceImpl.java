@@ -1,9 +1,11 @@
 package com.roadTransport.RTWallet.serviceImpl;
 
 import com.roadTransport.RTWallet.entity.WalletDetails;
+import com.roadTransport.RTWallet.model.TransactionRequest;
 import com.roadTransport.RTWallet.model.WalletPinRequest;
 import com.roadTransport.RTWallet.model.WalletRequest;
 import com.roadTransport.RTWallet.repository.WalletRepository;
+import com.roadTransport.RTWallet.service.TransactionService;
 import com.roadTransport.RTWallet.service.WalletService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,6 +19,9 @@ public class WalletServiceImpl implements WalletService {
 
     @Autowired
     private WalletRepository walletRepository;
+
+    @Autowired
+    private TransactionService transactionService;
 
     @Override
     public WalletDetails add(WalletRequest walletRequest) throws Exception {
@@ -68,6 +73,13 @@ public class WalletServiceImpl implements WalletService {
 
        WalletDetails walletDetails = walletRepository.findByWallet(walletRequest.getWalletId());
        walletDetails.setBalance(walletDetails.getBalance());
+       TransactionRequest transactionRequest = new TransactionRequest();
+       transactionRequest.setWalletId(walletRequest.getWalletId());
+       transactionRequest.setStatus(true);
+       transactionRequest.setUserName(walletRequest.getOwnerName());
+       transactionRequest.setUserMobileNumber(walletRequest.getWalletId());
+       transactionRequest.setAmount(walletRequest.getBalance());
+       transactionService.add(transactionRequest);
        walletRepository.saveAndFlush(walletDetails);
         return walletDetails;
     }

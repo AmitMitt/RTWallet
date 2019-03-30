@@ -1,10 +1,11 @@
 package com.roadTransport.RTWallet.entity;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Table
 @Entity
-public class TransactionDetails {
+public class TransactionDetails implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -67,9 +68,6 @@ public class TransactionDetails {
 
     @Column
     private boolean status;
-
-    @Column
-    private boolean reverseStatus;
 
     public long getId() {
         return id;
@@ -231,14 +229,6 @@ public class TransactionDetails {
         this.status = status;
     }
 
-    public boolean isReverseStatus() {
-        return reverseStatus;
-    }
-
-    public void setReverseStatus(boolean reverseStatus) {
-        this.reverseStatus = reverseStatus;
-    }
-
     @Override
     public String toString() {
         return "TransactionDetails{" +
@@ -262,7 +252,6 @@ public class TransactionDetails {
                 ", reverseTransactionDate='" + reverseTransactionDate + '\'' +
                 ", description='" + description + '\'' +
                 ", status=" + status +
-                ", reverseStatus=" + reverseStatus +
                 '}';
     }
 }

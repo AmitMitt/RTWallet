@@ -2,17 +2,17 @@ package com.roadTransport.RTWallet.model;
 
 public class TransactionResponse {
 
-    private String userMobileNumber;
+    private long userMobileNumber;
     private String transactionnNumber;
     private boolean status;
     private String message;
     private boolean reverseStatus;
 
-    public String getUserMobileNumber() {
+    public long getUserMobileNumber() {
         return userMobileNumber;
     }
 
-    public void setUserMobileNumber(String userMobileNumber) {
+    public void setUserMobileNumber(long userMobileNumber) {
         this.userMobileNumber = userMobileNumber;
     }
 

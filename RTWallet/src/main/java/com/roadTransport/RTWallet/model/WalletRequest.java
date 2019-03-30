@@ -7,6 +7,7 @@ public class WalletRequest {
     private String walletPin;
     private double balance;
 
+
     public String getOwnerName() {
         return ownerName;
     }
