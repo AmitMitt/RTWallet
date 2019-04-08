@@ -2,6 +2,7 @@ package com.roadTransport.RTWallet.entity;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Table
 @Entity
@@ -16,11 +17,11 @@ public class WalletDetails {
     @NotNull
     private String ownerName;
 
-    @Column(unique = true, length = 10)
+    @Column(length = 10)
     @NotNull
     private long walletId;
 
-    @Column(length = 4)
+    @Column(columnDefinition = "Text")
     @NotNull
     private String walletPin;
 
@@ -29,10 +30,21 @@ public class WalletDetails {
     private double balance;
 
     @Column
-    private String createdDate;
+    private long createdDate;
 
     @Column
-    private String modifiedDate;
+    private long modifiedDate;
+
+    @Column
+    private String roleName;
+
+    public String getRoleName() {
+        return roleName;
+    }
+
+    public void setRoleName(String roleName) {
+        this.roleName = roleName;
+    }
 
     public long getId() {
         return id;
@@ -74,19 +86,19 @@ public class WalletDetails {
         this.balance = balance;
     }
 
-    public String getCreatedDate() {
+    public long getCreatedDate() {
         return createdDate;
     }
 
-    public void setCreatedDate(String createdDate) {
+    public void setCreatedDate(long createdDate) {
         this.createdDate = createdDate;
     }
 
-    public String getModifiedDate() {
+    public long getModifiedDate() {
         return modifiedDate;
     }
 
-    public void setModifiedDate(String modifiedDate) {
+    public void setModifiedDate(long modifiedDate) {
         this.modifiedDate = modifiedDate;
     }
 
@@ -96,10 +108,11 @@ public class WalletDetails {
                 "id=" + id +
                 ", ownerName='" + ownerName + '\'' +
                 ", walletId=" + walletId +
-                ", walletPin=" + walletPin +
+                ", walletPin='" + walletPin + '\'' +
                 ", balance=" + balance +
                 ", createdDate='" + createdDate + '\'' +
                 ", modifiedDate='" + modifiedDate + '\'' +
+                ", roleName='" + roleName + '\'' +
                 '}';
     }
 }

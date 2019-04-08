@@ -4,9 +4,17 @@ public class WalletRequest {
 
     private String ownerName;
     private long walletId;
-    private String walletPin;
+    private long walletPin;
     private double balance;
+    private String roleName;
 
+    public String getRoleName() {
+        return roleName;
+    }
+
+    public void setRoleName(String roleName) {
+        this.roleName = roleName;
+    }
 
     public String getOwnerName() {
         return ownerName;
@@ -24,11 +32,11 @@ public class WalletRequest {
         this.walletId = walletId;
     }
 
-    public String getWalletPin() {
+    public long getWalletPin() {
         return walletPin;
     }
 
-    public void setWalletPin(String walletPin) {
+    public void setWalletPin(long walletPin) {
         this.walletPin = walletPin;
     }
 
@@ -47,6 +55,7 @@ public class WalletRequest {
                 ", walletId=" + walletId +
                 ", walletPin=" + walletPin +
                 ", balance=" + balance +
+                ", roleName='" + roleName + '\'' +
                 '}';
     }
 }

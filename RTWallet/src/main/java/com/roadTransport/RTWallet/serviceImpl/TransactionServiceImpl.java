@@ -27,9 +27,8 @@ public class TransactionServiceImpl implements TransactionService {
     public TransactionDetails add(TransactionRequest transactionRequest) {
 
         TransactionDetails transactionDetails = new TransactionDetails();
-        WalletDetails walletDetails = walletService.getBalance(transactionDetails.getWalletId());
         transactionDetails.setAmount(transactionRequest.getAmount());
-        transactionDetails.setAvailableBalance(walletDetails.getBalance());
+        transactionDetails.setAvailableBalance(0);
         transactionDetails.setCreditCardId(transactionRequest.getCreditCardId());
         transactionDetails.setDebitCardId(transactionRequest.getDebitCardId());
         transactionDetails.setDescription(transactionRequest.getDescription());
@@ -49,9 +48,9 @@ public class TransactionServiceImpl implements TransactionService {
         }
         transactionDetails.setStatus(transactionRequest.isStatus());
         transactionDetails.setTransactionDate(new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime()));
-        transactionDetails.setUpdatedBalance(walletDetails.getBalance());
+        transactionDetails.setUpdatedBalance(0);
         transactionDetails.setUserMobileNumber(transactionRequest.getUserMobileNumber());
-        transactionDetails.setTransactionnNumber(GenerateTransactionNumber.generateTransactionNumber());
+        transactionDetails.setTransactionNumber(GenerateTransactionNumber.generateTransactionNumber());
         transactionDetails.setUserName(transactionRequest.getUserName());
         transactionDetails.setWalletId(transactionDetails.getWalletId());
         transactionRepository.saveAndFlush(transactionDetails);

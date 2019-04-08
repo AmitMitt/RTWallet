@@ -2,32 +2,41 @@ package com.roadTransport.RTWallet.model;
 
 public class WalletPinRequest {
 
-    private String currentPin;
-    private String newPin;
-    private String confirmPin;
+    private long currentPin;
+    private long newPin;
+    private long confirmPin;
     private long walletId;
+    private String roleName;
 
-    public String getCurrentPin() {
+    public String getRoleName() {
+        return roleName;
+    }
+
+    public void setRoleName(String roleName) {
+        this.roleName = roleName;
+    }
+
+    public long getCurrentPin() {
         return currentPin;
     }
 
-    public void setCurrentPin(String currentPin) {
+    public void setCurrentPin(long currentPin) {
         this.currentPin = currentPin;
     }
 
-    public String getNewPin() {
+    public long getNewPin() {
         return newPin;
     }
 
-    public void setNewPin(String newPin) {
+    public void setNewPin(long newPin) {
         this.newPin = newPin;
     }
 
-    public String getConfirmPin() {
+    public long getConfirmPin() {
         return confirmPin;
     }
 
-    public void setConfirmPin(String confirmPin) {
+    public void setConfirmPin(long confirmPin) {
         this.confirmPin = confirmPin;
     }
 
@@ -42,10 +51,11 @@ public class WalletPinRequest {
     @Override
     public String toString() {
         return "WalletPinRequest{" +
-                "currentPin='" + currentPin + '\'' +
-                ", newPin='" + newPin + '\'' +
-                ", confirmPin='" + confirmPin + '\'' +
+                "currentPin=" + currentPin +
+                ", newPin=" + newPin +
+                ", confirmPin=" + confirmPin +
                 ", walletId=" + walletId +
+                ", roleName='" + roleName + '\'' +
                 '}';
     }
 }

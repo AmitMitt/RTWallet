@@ -25,7 +25,7 @@ public class TransactionController {
         TransactionResponse transactionResponse = new TransactionResponse();
         transactionResponse.setReverseStatus(transactionDetails.isReverse());
         transactionResponse.setStatus(transactionDetails.isStatus());
-        transactionResponse.setTransactionnNumber(transactionDetails.getTransactionnNumber());
+        transactionResponse.setTransactionNumber(transactionDetails.getTransactionNumber());
         transactionResponse.setUserMobileNumber(transactionDetails.getUserMobileNumber());
         if(transactionDetails.isReverse() == false){
             transactionResponse.setMessage("Reverse in process.");

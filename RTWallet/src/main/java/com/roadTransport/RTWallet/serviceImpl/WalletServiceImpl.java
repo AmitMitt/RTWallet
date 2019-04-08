@@ -9,10 +9,9 @@ import com.roadTransport.RTWallet.service.TransactionService;
 import com.roadTransport.RTWallet.service.WalletService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.text.SimpleDateFormat;
 import java.util.Base64;
 import java.util.Calendar;
+import java.util.TimeZone;
 
 @Service
 public class WalletServiceImpl implements WalletService {
@@ -26,35 +25,35 @@ public class WalletServiceImpl implements WalletService {
     @Override
     public WalletDetails add(WalletRequest walletRequest) throws Exception {
 
-       WalletDetails walletDetails = walletRepository.findByWallet(walletRequest.getWalletId());
+       WalletDetails walletDetails = walletRepository.findByWallet(walletRequest.getWalletId(),walletRequest.getRoleName());
        if (walletDetails != null){
            throw new Exception("Wallet Already Exist.");
        }
 
        WalletDetails walletDetails1 = new WalletDetails();
        walletDetails1.setBalance(0);
-       walletDetails1.setCreatedDate(new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime()));
+       walletDetails1.setCreatedDate(Calendar.getInstance(TimeZone.getTimeZone("UTC")).getTimeInMillis());
        walletDetails1.setOwnerName(walletRequest.getOwnerName());
        walletDetails1.setWalletId(walletRequest.getWalletId());
-       walletDetails1.setWalletPin(Base64.getEncoder().encodeToString(walletRequest.getWalletPin().getBytes()));
-
+       walletDetails1.setWalletPin(Base64.getEncoder().encodeToString(String.valueOf(walletRequest.getWalletPin()).getBytes()));
+       walletDetails1.setRoleName(walletRequest.getRoleName());
        walletRepository.saveAndFlush(walletDetails1);
         return walletDetails1;
     }
 
     @Override
-    public WalletDetails getListByWallet(long walletId) throws Exception {
+    public WalletDetails getListByWallet(long walletId,String roleName) throws Exception {
 
-        WalletDetails walletDetails = walletRepository.findByWallet(walletId);
+        WalletDetails walletDetails = walletRepository.findByWallet(walletId,roleName);
         return walletDetails;
     }
 
     @Override
     public WalletDetails update(WalletRequest walletRequest) {
 
-        WalletDetails walletDetails = walletRepository.findByWallet(walletRequest.getWalletId());
+        WalletDetails walletDetails = walletRepository.findByWallet(walletRequest.getWalletId(),walletRequest.getRoleName());
 
-        walletDetails.setModifiedDate(new SimpleDateFormat("yyyyMMdd_HHmmss").format(Calendar.getInstance().getTime()));
+        walletDetails.setModifiedDate(Calendar.getInstance(TimeZone.getTimeZone("UTC")).getTimeInMillis());
         walletDetails.setOwnerName(walletRequest.getOwnerName());
         walletRepository.saveAndFlush(walletDetails);
 
@@ -62,8 +61,8 @@ public class WalletServiceImpl implements WalletService {
     }
 
     @Override
-    public WalletDetails delete(long walletId) {
-        WalletDetails walletDetails = walletRepository.findByWallet(walletId);
+    public WalletDetails delete(long walletId,String roleName) {
+        WalletDetails walletDetails = walletRepository.findByWallet(walletId,roleName);
         walletRepository.delete(walletDetails);
         return null;
     }
@@ -71,7 +70,7 @@ public class WalletServiceImpl implements WalletService {
     @Override
     public WalletDetails updateBalance(WalletRequest walletRequest) {
 
-       WalletDetails walletDetails = walletRepository.findByWallet(walletRequest.getWalletId());
+       WalletDetails walletDetails = walletRepository.findByWallet(walletRequest.getWalletId(),walletRequest.getRoleName());
        walletDetails.setBalance(walletDetails.getBalance());
        TransactionRequest transactionRequest = new TransactionRequest();
        transactionRequest.setWalletId(walletRequest.getWalletId());
@@ -85,9 +84,9 @@ public class WalletServiceImpl implements WalletService {
     }
 
     @Override
-    public WalletDetails getBalance(long walletId) {
+    public WalletDetails getBalance(long walletId,String roleName) {
 
-        WalletDetails walletDetails = walletRepository.findByWallet(walletId);
+        WalletDetails walletDetails = walletRepository.findByWallet(walletId,roleName);
 
         return walletDetails;
     }
@@ -95,14 +94,14 @@ public class WalletServiceImpl implements WalletService {
     @Override
     public WalletDetails updateWalletPin(WalletPinRequest walletRequest) throws Exception {
 
-        WalletDetails walletDetails = walletRepository.findByWallet(walletRequest.getWalletId());
+        WalletDetails walletDetails = walletRepository.findByWallet(walletRequest.getWalletId(),walletRequest.getRoleName());
 
         byte[] pin = Base64.getDecoder().decode(walletDetails.getWalletPin());
         String decodedString = new String(pin);
 
-        if(walletRequest.getCurrentPin().equalsIgnoreCase(decodedString)){
-            if(walletRequest.getNewPin().equalsIgnoreCase(walletRequest.getConfirmPin())){
-                walletDetails.setWalletPin(Base64.getEncoder().encodeToString(walletRequest.getNewPin().getBytes()));
+        if(walletRequest.getCurrentPin()==Long.parseLong(decodedString)){
+            if(walletRequest.getNewPin()==(walletRequest.getConfirmPin())){
+                walletDetails.setWalletPin(Base64.getEncoder().encodeToString(String.valueOf(walletRequest.getNewPin()).getBytes()));
                 walletRepository.saveAndFlush(walletDetails);
             }
             else {

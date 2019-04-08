@@ -5,7 +5,7 @@ import java.io.Serializable;
 
 @Table
 @Entity
-public class TransactionDetails implements Serializable {
+public class TransactionDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -49,7 +49,7 @@ public class TransactionDetails implements Serializable {
     private double updatedBalance;
 
     @Column
-    private String transactionnNumber;
+    private String transactionNumber;
 
     @Column
     private boolean reverse;
@@ -173,12 +173,12 @@ public class TransactionDetails implements Serializable {
         this.updatedBalance = updatedBalance;
     }
 
-    public String getTransactionnNumber() {
-        return transactionnNumber;
+    public String getTransactionNumber() {
+        return transactionNumber;
     }
 
-    public void setTransactionnNumber(String transactionnNumber) {
-        this.transactionnNumber = transactionnNumber;
+    public void setTransactionNumber(String transactionNumber) {
+        this.transactionNumber = transactionNumber;
     }
 
     public boolean isReverse() {
@@ -245,7 +245,7 @@ public class TransactionDetails implements Serializable {
                 ", reverseAmount=" + reverseAmount +
                 ", availableBalance=" + availableBalance +
                 ", updatedBalance=" + updatedBalance +
-                ", transactionnNumber='" + transactionnNumber + '\'' +
+                ", transactionNumber='" + transactionNumber + '\'' +
                 ", reverse=" + reverse +
                 ", reverseTransactioNumber='" + reverseTransactioNumber + '\'' +
                 ", transactionDate='" + transactionDate + '\'' +

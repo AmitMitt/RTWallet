@@ -41,20 +41,20 @@ public class WalletController {
     }
 
     @CacheEvict(value = "WalletDetails")
-    @DeleteMapping("delete/{walletId}")
-    public ResponseEntity<WalletResponse> delete(@PathVariable("walletId") long walletId){
+    @DeleteMapping("delete/{walletId}/{roleName}")
+    public ResponseEntity<WalletResponse> delete(@PathVariable("walletId") long walletId,@PathVariable("roleName") String roleName){
 
-        walletService.delete(walletId);
+        walletService.delete(walletId,roleName);
         WalletResponse walletResponse = new WalletResponse();
         walletResponse.setMessage("Successfully Deleted.");
         return ResponseEntity.ok(walletResponse);
     }
 
     @Cacheable(value = "WalletDetails", key = "#walletId")
-    @GetMapping("get/{walletId}")
-    public ResponseEntity<WalletDetails> getData(@PathVariable("walletId") long walletId) throws Exception {
+    @GetMapping("get/{walletId}/{roleName}")
+    public ResponseEntity<WalletDetails> getData(@PathVariable("walletId") long walletId,@PathVariable("roleName")  String roleName) throws Exception {
 
-        WalletDetails walletDetails = walletService.getListByWallet(walletId);
+        WalletDetails walletDetails = walletService.getListByWallet(walletId,roleName);
         return ResponseEntity.ok(walletDetails);
     }
 
@@ -70,10 +70,10 @@ public class WalletController {
     }
 
     @Cacheable(value = "WalletDetails", key = "#walletId")
-    @GetMapping("getBalance/{walletId}")
-    public ResponseEntity<WalletResponse> getBalance(@PathVariable("walletId") long walletId){
+    @GetMapping("getBalance/{walletId}/{roleName}")
+    public ResponseEntity<WalletResponse> getBalance(@PathVariable("walletId") long walletId,@PathVariable("roleName") String roleName){
 
-        WalletDetails walletDetails = walletService.getBalance(walletId);
+        WalletDetails walletDetails = walletService.getBalance(walletId,roleName);
         WalletResponse walletResponse = new WalletResponse();
         walletResponse.setBalance(walletDetails.getBalance());
         return ResponseEntity.ok(walletResponse);

@@ -3,7 +3,7 @@ package com.roadTransport.RTWallet.model;
 public class TransactionResponse {
 
     private long userMobileNumber;
-    private String transactionnNumber;
+    private String transactionNumber;
     private boolean status;
     private String message;
     private boolean reverseStatus;
@@ -16,12 +16,12 @@ public class TransactionResponse {
         this.userMobileNumber = userMobileNumber;
     }
 
-    public String getTransactionnNumber() {
-        return transactionnNumber;
+    public String getTransactionNumber() {
+        return transactionNumber;
     }
 
-    public void setTransactionnNumber(String transactionnNumber) {
-        this.transactionnNumber = transactionnNumber;
+    public void setTransactionNumber(String transactionNumber) {
+        this.transactionNumber = transactionNumber;
     }
 
     public boolean isStatus() {
@@ -52,7 +52,7 @@ public class TransactionResponse {
     public String toString() {
         return "TransactionResponse{" +
                 "userMobileNumber='" + userMobileNumber + '\'' +
-                ", transactionnNumber='" + transactionnNumber + '\'' +
+                ", transactionNumber='" + transactionNumber + '\'' +
                 ", status=" + status +
                 ", message='" + message + '\'' +
                 ", reverseStatus=" + reverseStatus +
